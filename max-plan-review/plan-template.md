@@ -10,11 +10,11 @@
 |---|---|
 | Revision плана | ... |
 | Проверенный `HEAD` | ... |
-| Проверенный remote SHA | ... |
 | Последний принятый коммит | ... |
 | Последний опубликованный коммит | ... |
+| Результат последнего push | успешно: `<remote>/<ref>` / ошибка |
 | Активный пакет | ... |
-| Фаза | `PLAN_REVIEW` / `RED_AUTHORING` / `RED_REVIEW` / `RED_PUBLISHING` / `GREEN_IMPLEMENTATION` / `STAGED_REVIEW` / `CORRECTION` / `GREEN_PUBLISHING` / `FINAL_REVIEW` |
+| Фаза | `PLAN_REVIEW` / `RED_AUTHORING` / `RED_REVIEW` / `GREEN_IMPLEMENTATION` / `STAGED_REVIEW` / `CORRECTION` / `FINAL_REVIEW` |
 | Вердикт | `ACCEPT` / `REJECT` / `BLOCKED` |
 | Активный `Handoff ID` | `P2-GREEN-v1` / нет |
 | Активный handoff-файл | `.git/codex-plans/<thread-id>/handoffs/P2-GREEN-v1.md` / нет |
@@ -48,7 +48,7 @@
 
 ## Реестр пакетов
 
-| Пакет | Наблюдаемый результат | Статус | RED commit / remote SHA | GREEN commit / remote SHA | Следующий gate |
+| Пакет | Наблюдаемый результат | Статус | RED commit / push | GREEN commit / push | Следующий gate |
 |---|---|---|---|---|---|
 | P1 | ... | pushed | `<red-sha>` | `<green-sha>` | — |
 | P2 | ... | active | `<red-sha>` / `<red-sha>` | — | GREEN implementation |
@@ -64,10 +64,10 @@
 
 ## Реестр выданных handoff
 
-| Handoff ID | Пакет | Фаза | Revision плана | Исходный snapshot | Отдельный файл | SHA-256 | Статус | Commit / remote SHA |
+| Handoff ID | Пакет | Фаза | Revision плана | Исходный snapshot | Отдельный файл | SHA-256 | Статус | Commit / push |
 |---|---|---|---|---|---|---|---|---|
 | `P2-RED-v1` | P2 | `RED_AUTHORING` | ... | `HEAD` | `.git/codex-plans/<thread-id>/handoffs/P2-RED-v1.md` | ... | `pushed` | `<red-sha>` |
-| `P2-RED-PUBLISH-v1` | P2 | `RED ACCEPT → RED_PUBLISHING` | ... | accepted staged tree | `.git/codex-plans/<thread-id>/handoffs/P2-RED-PUBLISH-v1.md` | ... | `completed` | `<red-sha>` |
+| `P2-RED-PUBLISH-v1` | P2 | `RED ACCEPT → GREEN_IMPLEMENTATION` | ... | accepted staged tree | `.git/codex-plans/<thread-id>/handoffs/P2-RED-PUBLISH-v1.md` | ... | `completed` | `<red-sha>` / успешно |
 | `P2-GREEN-v1` | P2 | `GREEN_IMPLEMENTATION` | ... | accepted RED commit | `.git/codex-plans/<thread-id>/handoffs/P2-GREEN-v1.md` | ... | `active` | — |
 
 Каждый handoff сохранить отдельным append-only файлом до отправки исполнителю. Основной план содержит только реестр и ссылки. После сжатия контекста перечитать активный файл; перед review перечитать файлы, по которым создавался проверяемый срез, и сверить их SHA-256.
@@ -75,10 +75,10 @@
 ## Общий цикл каждого пакета
 
 1. Наблюдаемый BDD-сценарий и один минимальный RED.
-2. RED-review; тот же `RED ACCEPT` разрешает атомарные RED commit/push; исполнитель возвращает один receipt, Макс проверяет remote SHA.
+2. RED-review; тот же `RED ACCEPT` разрешает атомарные RED commit/push; успешный receipt завершает публикацию без отдельной проверки remote Максом.
 3. Минимальная реализация до GREEN.
 4. Узкие проверки по карте риска и полный staged review тем же Максом.
-5. Тот же `STAGED ACCEPT` разрешает атомарные GREEN commit/push; исполнитель возвращает один receipt, Макс проверяет remote SHA.
+5. Тот же `STAGED ACCEPT` разрешает атомарные GREEN commit/push; успешный receipt завершает публикацию без отдельной проверки remote Максом.
 6. Следующий пакет только после опубликованного GREEN.
 
 ## Этап N. Название результата
@@ -114,7 +114,7 @@
 
 ### Граница коммита
 
-Для RED, GREEN и принятой correction-стадии отдельно указать неизменяемую границу поведения, точный staged tree, пути и артефакты коммита, commit/push handoff, hook evidence, локальный commit SHA и подтверждённый remote SHA. Явно перечислить исключённые соседние области.
+Для RED, GREEN и принятой correction-стадии отдельно указать неизменяемую границу поведения, точный staged tree, пути и артефакты коммита, commit/push handoff, hook evidence, локальный commit SHA и успешный результат push в целевую ref. Явно перечислить исключённые соседние области.
 
 ### Принятые отклонения реализации
 
