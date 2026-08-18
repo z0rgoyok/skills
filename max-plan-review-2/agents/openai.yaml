@@ -1,7 +1,0 @@
-interface:
-  display_name: "Макс 2: управление и ревью"
-  short_description: "Управляемый BDD-цикл с plan-памятью"
-  default_prompt: "Используй $max-plan-review-2, чтобы вести поэтапную реализацию через план, RED, GREEN и staged review."
-
-policy:
-  allow_implicit_invocation: false
