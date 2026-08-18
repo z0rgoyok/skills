@@ -14,7 +14,7 @@
 | Последний принятый коммит | ... |
 | Последний опубликованный коммит | ... |
 | Активный пакет | ... |
-| Фаза | `PLAN_REVIEW` / `RED_AUTHORING` / `RED_REVIEW` / `RED_COMMIT` / `RED_PUSH` / `GREEN_IMPLEMENTATION` / `STAGED_REVIEW` / `CORRECTION` / `GREEN_COMMIT` / `GREEN_PUSH` / `FINAL_REVIEW` |
+| Фаза | `PLAN_REVIEW` / `RED_AUTHORING` / `RED_REVIEW` / `RED_PUBLISHING` / `GREEN_IMPLEMENTATION` / `STAGED_REVIEW` / `CORRECTION` / `GREEN_PUBLISHING` / `FINAL_REVIEW` |
 | Вердикт | `ACCEPT` / `REJECT` / `BLOCKED` |
 | Активный `Handoff ID` | `P2-GREEN-v1` / нет |
 | Активный handoff-файл | `.git/codex-plans/<thread-id>/handoffs/P2-GREEN-v1.md` / нет |
@@ -51,7 +51,7 @@
 | Пакет | Наблюдаемый результат | Статус | RED commit / remote SHA | GREEN commit / remote SHA | Следующий gate |
 |---|---|---|---|---|---|
 | P1 | ... | pushed | `<red-sha>` | `<green-sha>` | — |
-| P2 | ... | active | `<red-sha>` / — | — | RED push |
+| P2 | ... | active | `<red-sha>` / `<red-sha>` | — | GREEN implementation |
 
 ## Актуальный чеклист исполнителя
 
@@ -67,7 +67,7 @@
 | Handoff ID | Пакет | Фаза | Revision плана | Исходный snapshot | Отдельный файл | SHA-256 | Статус | Commit / remote SHA |
 |---|---|---|---|---|---|---|---|---|
 | `P2-RED-v1` | P2 | `RED_AUTHORING` | ... | `HEAD` | `.git/codex-plans/<thread-id>/handoffs/P2-RED-v1.md` | ... | `pushed` | `<red-sha>` |
-| `P2-RED-PUBLISH-v1` | P2 | `RED_COMMIT → RED_PUSH` | ... | accepted staged tree | `.git/codex-plans/<thread-id>/handoffs/P2-RED-PUBLISH-v1.md` | ... | `completed` | `<red-sha>` |
+| `P2-RED-PUBLISH-v1` | P2 | `RED ACCEPT → RED_PUBLISHING` | ... | accepted staged tree | `.git/codex-plans/<thread-id>/handoffs/P2-RED-PUBLISH-v1.md` | ... | `completed` | `<red-sha>` |
 | `P2-GREEN-v1` | P2 | `GREEN_IMPLEMENTATION` | ... | accepted RED commit | `.git/codex-plans/<thread-id>/handoffs/P2-GREEN-v1.md` | ... | `active` | — |
 
 Каждый handoff сохранить отдельным append-only файлом до отправки исполнителю. Основной план содержит только реестр и ссылки. После сжатия контекста перечитать активный файл; перед review перечитать файлы, по которым создавался проверяемый срез, и сверить их SHA-256.
@@ -75,10 +75,10 @@
 ## Общий цикл каждого пакета
 
 1. Наблюдаемый BDD-сценарий и один минимальный RED.
-2. RED-review, отдельный RED-коммит, push и проверка remote SHA.
+2. RED-review; тот же `RED ACCEPT` разрешает атомарные RED commit/push; исполнитель возвращает один receipt, Макс проверяет remote SHA.
 3. Минимальная реализация до GREEN.
 4. Узкие проверки по карте риска и полный staged review тем же Максом.
-5. Отдельный GREEN-коммит, push и проверка remote SHA.
+5. Тот же `STAGED ACCEPT` разрешает атомарные GREEN commit/push; исполнитель возвращает один receipt, Макс проверяет remote SHA.
 6. Следующий пакет только после опубликованного GREEN.
 
 ## Этап N. Название результата

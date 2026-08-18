@@ -129,7 +129,7 @@
 ### После `STAGED ACCEPT`
 
 ```text
-Сформировать отдельный publish-handoff по stage-publish-handoff-template.md.
+Макс сформирует и выдаст publish-handoff в том же ответе со STAGED ACCEPT; отдельное разрешение не запрашивать.
 ```
 
 ## Staging и возврат Максу
