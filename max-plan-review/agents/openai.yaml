@@ -1,0 +1,7 @@
+interface:
+  display_name: "Макс: план и ревью"
+  short_description: "Планирование и циклы ревью с Максом"
+  default_prompt: "Используй $max-plan-review, чтобы подготовить план и провести поэтапную реализацию с ревью Макса."
+
+policy:
+  allow_implicit_invocation: false
