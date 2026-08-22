@@ -1,0 +1,7 @@
+interface:
+  display_name: "Универсальное ревью — по запросу"
+  short_description: "Доказательное ревью только по явному вызову"
+  default_prompt: "Используй $universal-review для независимого доказательного ревью переданного изменения."
+
+policy:
+  allow_implicit_invocation: false
