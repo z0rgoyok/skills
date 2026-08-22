@@ -1,0 +1,4 @@
+interface:
+  display_name: "Semantic Duplication Audit"
+  short_description: "Находит и разбирает смысловые дубли кода"
+  default_prompt: "Используй $semantic-duplication-audit, чтобы проверить этот репозиторий на смысловые дубли и отделить общие правила от безобидного сходства."
