@@ -1,0 +1,4 @@
+interface:
+  display_name: "Self Mode Developer"
+  short_description: "Закреплённый инженерный подход к разработке"
+  default_prompt: "Используй $self-mode-developer, чтобы спроектировать и выполнить эту разработку моим инженерным способом."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Self Mode Developer — English"
+  short_description: "An established engineering approach to development"
+  default_prompt: "Use $self-mode-developer-en to design and deliver this development task using my engineering approach."
