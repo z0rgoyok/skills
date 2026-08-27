@@ -16,6 +16,12 @@ Read this before downloading, installing, or first running an external dependenc
 
 Typically consider a dependency declared in the project manifest and lockfile, an approved system package manager, an existing reproducible environment or container, an official version-pinned artifact with a verified checksum, or an image pinned to an immutable digest.
 
+## Controlled fork
+
+- **Recommended path for a Git-sourced component:** use a fork controlled by the user or an approved organization and pin the supply path to a reviewed commit.
+- If no trusted fork exists, offer to create one as the first option. Before creating it, obtain explicit authorization and confirm the hosting service, owner or organization, visibility, and repository name.
+- After creation, use the fork as the supply source and obtain separate authorization before synchronizing it with upstream.
+
 ## Implicit download and execution
 
 - Do not use mechanisms that fetch and execute a missing external component from a package or container registry, Git repository, or URL in one invocation: `npx`, `npm exec`, `pnpm dlx`, `yarn dlx`, `bunx`, `uvx`, `pipx run`, `go run module@version`, `docker run` or `podman run` with a missing image, `curl … | sh`, and equivalents.
