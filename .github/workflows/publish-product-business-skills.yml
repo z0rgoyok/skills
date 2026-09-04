@@ -1,0 +1,59 @@
+name: Verify and index product and business skills
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-product-business-skills.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+
+      - name: Install the four published skills with the official CLI
+        shell: bash
+        env:
+          npm_config_ignore_scripts: 'true'
+        run: |
+          set -euo pipefail
+          workdir="$(mktemp -d)"
+          cd "$workdir"
+          npm exec --yes --package=skills@1.5.23 -- skills add z0rgoyok/skills \
+            --skill product-manager product-manager-en business-analyst business-analyst-en \
+            --agent universal --yes
+          for skill in product-manager product-manager-en business-analyst business-analyst-en; do
+            for file in SKILL.md references/playbook.md agents/openai.yaml; do
+              test -s ".agents/skills/$skill/$file"
+            done
+            printf 'Verified installed skill: %s\n' "$skill"
+          done
+          {
+            echo '## Skills installation verified'
+            echo 'Installed all four product-manager and business-analyst language variants.'
+            echo 'The official CLI uses its default telemetry, including its CI marker.'
+            echo 'Catalog indexing is controlled by skills.sh; a successful install alone does not prove a listing.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check catalog pages without generating additional install events
+        shell: bash
+        run: |
+          set -euo pipefail
+          for skill in product-manager product-manager-en business-analyst business-analyst-en; do
+            url="https://skills.sh/z0rgoyok/skills/$skill"
+            if status="$(curl --location --silent --show-error --max-time 20 --output "$RUNNER_TEMP/$skill.html" --write-out '%{http_code}' "$url")"; then
+              printf '%s HTTP %s\n' "$url" "$status"
+              printf -- '- [%s](%s): HTTP %s (content still requires verification).\n' "$skill" "$url" "$status" >> "$GITHUB_STEP_SUMMARY"
+            else
+              printf 'Catalog check unavailable: %s\n' "$url"
+            fi
+          done
