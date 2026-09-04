@@ -1,0 +1,4 @@
+interface:
+  display_name: "Продакт-менеджер"
+  short_description: "Discovery, стратегия, приоритеты и метрики продукта"
+  default_prompt: "Используй $product-manager: определи проблему и сегмент, сравни варианты, предложи outcome, метрики и следующий шаг проверки ценности."

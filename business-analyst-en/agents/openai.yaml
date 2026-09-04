@@ -1,0 +1,4 @@
+interface:
+  display_name: "Business Analyst — English"
+  short_description: "Business processes, rules, and testable requirements"
+  default_prompt: "Use $business-analyst-en to analyze processes and rules, specify testable requirements, acceptance criteria, and traceability, and surface open questions."

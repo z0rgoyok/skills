@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product Manager — English"
+  short_description: "Product discovery, strategy, priorities, and outcomes"
+  default_prompt: "Use $product-manager-en to frame the problem and segment, compare options, and propose outcomes, metrics, and the next value-validation step."
